@@ -1,4 +1,54 @@
+<h3>Bundles</h3>
 {% extends "navbar.html" %}
 {% block content %}
-See all bundles
+    <table>
+        <tr>
+            <th><a href="#">New Bundle</a></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Items</th>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>1</td>
+            <td>Spring Foraging Bundle</td>
+            <td>One of six bundles in the Craft Room.</td>
+            <td>Wild Horseradish, Daffodil, Leek, Dandelion</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>2</td>
+            <td>Summer Foraging Bundle</td>
+            <td>One of six bundles in the Craft Room.</td>
+            <td>Grape, Spice Berry, Sweet Pea</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>3</td>
+            <td>Fall Foraging Bundle</td>
+            <td>One of six bundles in the Craft Room.</td>
+            <td>Common Mushroom, Wild Plum, Hazelnut, Blackberry</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>4</td>
+            <td>Winter Foraging Bundle</td>
+            <td>One of six bundles in the Craft Room.</td>
+            <td>Winter Root, Crystal Fruit, Snow Yam, Crocus</td>
+        </tr>
+    </table>
+
+    <br>
+    <form>
+        Add a Bundle:
+        <label for="bundle_name">Name: </label>
+        <input type="text" id="bundle_name" name="bundle_name">
+        <label for="bundle_description">Description: </label>
+        <input type="text" id="bundle_description" name="bundle_description">
+    </form>
 {% endblock %}
