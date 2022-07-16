@@ -1,4 +1,64 @@
+<h3>Items</h3>
 {% extends "navbar.html" %}
 {% block content %}
-See all items
+    <table>
+        <tr>
+            <th><a href="#">New Item</a></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Seasons</th>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>1</td>
+            <td>Wild Horseradish</td>
+            <td>A spicy root found in the spring.</td>
+            <td>Spring</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>2</td>
+            <td>Grape</td>
+            <td>A sweet cluster of fruit.</td>
+            <td>Summer, Fall</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>3</td>
+            <td>Common Mushroom</td>
+            <td>Slighly nutty, with a good texture</td>
+            <td>Fall</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>4</td>
+            <td>Crystal Fruit</td>
+            <td>A delicate fruit that pops up from the snow.</td>
+            <td>Winter</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>5</td>
+            <td>Kale Seeds</td>
+            <td>Plant these in the Spring. Take 6 days to mature. Harvest with a Scythe</td>
+            <td>Spring</td>
+        </tr>
+    </table>
+
+    <br>
+    <form>
+        Add an Item:
+        <label for="item_name">Name: </label>
+        <input type="text" id="item_name" name="item_name">
+        <label for="item_description">Item: </label>
+        <input type="text" id="item_description" name="item_description">
+        <label for="item_season">Seasons: </label>
+        <input type="text" id="item_season" name="item_season">
+    </form>
 {% endblock %}
