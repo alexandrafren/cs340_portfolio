@@ -1,0 +1,43 @@
+<h3>Shop Items</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Shop ID</th>
+            <th>Shop Name</th>
+            <th>Item ID</th>
+            <th>Item Name</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>Pierre's General Store</td>
+            <td>5</td>
+            <td>Kale Seeds</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>1</td>
+            <td>Pierre's General Store</td>
+            <td>6</td>
+            <td>Wheat Seeds</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>1</td>
+            <td>Pierre's General Store</td>
+            <td>7</td>
+            <td>Blueberry Seeds</td>
+        </tr>
+    </table>
+
+    <br>
+    <form>
+        Add a Shop Item:
+        <label for="shop_id">Shop ID: </label>
+        <input type="text" id="shop_id" name="shop_id">
+        <label for="item_id">Item ID: </label>
+        <input type="text" id="item_id" name="item_id">
+    </form>
+{% endblock %}
