@@ -1,0 +1,51 @@
+<h3>Character Items</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>ID</th>
+            <th>Character ID</th>
+            <th>Character Name</th>
+            <th>Item ID</th>
+            <th>Item Name</th>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>1</td>
+            <td>1</td>
+            <td>Krobus</td>
+            <td>1</td>
+            <td>Wild Horseradish</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>2</td>
+            <td>2</td>
+            <td>Vincent</td>
+            <td>2</td>
+            <td>Grape</td>
+        </tr>
+        <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td>3</td>
+            <td>3</td>
+            <td>Pierre</td>
+            <td>3</td>
+            <td>Common Mushroom</td>
+        </tr>
+    </table>
+
+    <br>
+    <form>
+        Add a Character Item:
+        <label for="character_id">Character ID: </label>
+        <input type="text" id="character_id" name="character_id">
+        <label for="item_id">Item ID: </label>
+        <input type="text" id="item_id" name="item_id">
+    </form>
+{% endblock %}

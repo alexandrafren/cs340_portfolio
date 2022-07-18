@@ -1,4 +1,35 @@
+<h3>Regions</h3>
 {% extends "navbar.html" %}
 {% block content %}
-See all regions
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>The Sewers</td>
+            <td>A location unlocked by obtaining the Rusty Key after donating 60 items. Home to Krobus and Krobus' Shop.</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Pelican Town</td>
+            <td>The main playable area of the game, where the majority of the characters live, most shops are, and the players farm exists.</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>The Beach</td>
+            <td>The beach is an area south of Pelican Town and is valuable for fishing.</td>
+        </tr>
+    </table>
+
+    <br>
+    <form>
+        Add a Region:
+        <label for="region_name">Name: </label>
+        <input type="text" id="region_name" name="region_name">
+        <label for="region_description">Description: </label>
+        <input type="text" id="region_description" name="region_description">
+    </form>
 {% endblock %}
