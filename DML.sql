@@ -125,6 +125,17 @@ SELECT item_id,
 FROM Items
 WHERE name LIKE %:search%;
 
+-- Delete an item
+DELETE FROM Items
+WHERE item_id =: item_id 
+
+-- Update an item
+UPDATE Items
+SET name = :name,
+    description = :description,
+    seasons = :seasons
+WHERE item_id = : item_id 
+
 -- -----------------------------------------------------
 -- Regions Operations
 -- -----------------------------------------------------
