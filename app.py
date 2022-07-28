@@ -77,24 +77,61 @@ def get_characteritems():
 
         return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
-@app.route('/characteritems/create', methods = ['POST'])
-def create_characteritems():
-    """ This function implements the Create function of CRUD for Character Items """
-    return "Create Character Item"
-
 @app.route('/characteritems/update/<int:id>', methods = ['GET', 'POST'])
 def update_characteritems(id):
     """ This function implements the Update function of CRUD for Character Items. """
-    # GET
-    return render_template('updatecharacteritems.html', item = id)
+    if request.method == "POST":
+        if request.form.get("character"):
+            charID = request.form["character"]
+            itemID = request.form["item"]
+            
+            query1 = f"UPDATE CharacterItems \
+            SET character_id = {charID}, item = {itemID} \
+            WHERE id = {id};"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.method == "GET":
+        query2 = "SELECT character_items_id AS ID, \
+        CharacterItems.character_id AS CharacterID, \
+        NonPlayableCharacters.name AS CharacterName, \
+        CharacterItems.item_id AS ItemID, \
+        Items.name AS itemName \
+        FROM CharacterItems \
+        INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
+        INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+        WHERE CharacterItems.id = {id};"
+
+        query3 = "SELECT DISTINCT character_id, \
+        name \
+        FROM NonPlayableCharacters;"
+
+        query4 = "SELECT DISTINCT item_id, \
+        name \
+        FROM Items;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        charitem_data = cur.fetchall()
+        cur.execute(query3)
+        charSet = cur.fetchall()
+        cur.execute(query4)
+        itemSet = cur.fetchall()
+        return render_template('updatecharacteritems.html', item = charitem_data, charSet=charSet, itemSet=itemSet)
     # POST - update item and render characteritems.html
 
-@app.route('/characteritems/delete/<int:id>', methods= ['GET', 'POST'])
+@app.route('/characteritems/delete/<int:id>', methods= ['POST'])
 def delete_characteritems(id):
     """ This function implements the Delete function of CRUD for Character Items. """
-    # GET
-    return render_template('deletecharacteritems.html', item = id)
-    # POST - delete item and render characteritems.html
+    if request.method == "POST":
+        query1 = f"DELETE FROM CharacterItems WHERE CharacterItems.id = {id};"
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        mysql.connection.commit()
+    return redirect("/characteritems.html")
 
 @app.route('/shops')
 def get_shops():

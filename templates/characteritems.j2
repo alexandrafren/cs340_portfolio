@@ -13,7 +13,7 @@
             {% for entry in charitems %}
             <tr>
                 <td><a href="/characteritems/update/{{entry.ID}}">Edit</a></td>
-                <td><a href="/characteritems/delete/{{entry.ID}}">Delete</a></td>
+                <td><form action="/characteritems/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
                 {% for key in entry.keys() %}
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
