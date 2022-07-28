@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # database connection
-app.config["MYSQL_HOST"] = "localhost"
+app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
 app.config["MYSQL_USER"] = "test"
 app.config["MYSQL_PASSWORD"] = "test"
 app.config["MYSQL_DB"] = "local"
@@ -87,15 +87,41 @@ def update_characteritems(id):
             
             query1 = f"UPDATE CharacterItems \
             SET character_id = {charID}, item = {itemID} \
-            WHERE id = {id};"
+            WHERE character_items_id = {id};"
 
             cur = mysql.connection.cursor()
             cur.execute(query1)
             mysql.connection.commit()
+            
+            query2 = "SELECT character_items_id AS ID, \
+            CharacterItems.character_id AS CharacterID, \
+            NonPlayableCharacters.name AS CharacterName, \
+            CharacterItems.item_id AS ItemID, \
+            Items.name AS itemName \
+            FROM CharacterItems \
+            INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
+            INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+            ORDER BY CharacterName ASC;"
 
-        return redirect(request.url)
+            query3 = "SELECT DISTINCT character_id, \
+            name \
+            FROM NonPlayableCharacters;"
+
+            query4 = "SELECT DISTINCT item_id, \
+            name \
+            FROM Items;"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query2)
+            charitem_data = cur.fetchall()
+            cur.execute(query3)
+            charSet = cur.fetchall()
+            cur.execute(query4)
+            itemSet = cur.fetchall()
+
+            return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
     if request.method == "GET":
-        query2 = "SELECT character_items_id AS ID, \
+        query2 = f"SELECT character_items_id AS ID, \
         CharacterItems.character_id AS CharacterID, \
         NonPlayableCharacters.name AS CharacterName, \
         CharacterItems.item_id AS ItemID, \
@@ -120,8 +146,8 @@ def update_characteritems(id):
         charSet = cur.fetchall()
         cur.execute(query4)
         itemSet = cur.fetchall()
-        return render_template('updatecharacteritems.html', item = charitem_data, charSet=charSet, itemSet=itemSet)
-    # POST - update item and render characteritems.html
+        return render_template('updatecharacteritems.html', charitem = charitem_data, charSet=charSet, itemSet=itemSet)
+
 
 @app.route('/characteritems/delete/<int:id>', methods= ['POST'])
 def delete_characteritems(id):
@@ -178,4 +204,4 @@ def get_items():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=53271,debug=True)
