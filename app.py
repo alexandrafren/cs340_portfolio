@@ -36,7 +36,18 @@ def get_characters():
 def get_characteritems():
     """ This function implements the Retrieve funciton of CRUD for Character Items"""
     if request.method == "POST":
-        return render_template("characteritems.html")
+        if request.form.get("character"):
+            charID = request.form["character"]
+            itemID = request.form["item"]
+            
+            query1 = f"INSERT INTO CharacterItems (character_id, item_id) \
+            VALUES ({charID}, {itemID});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
     if request.method == "GET":
         query2 = "SELECT character_items_id AS ID, \
         CharacterItems.character_id AS CharacterID, \
@@ -45,15 +56,16 @@ def get_characteritems():
         Items.name AS itemName \
         FROM CharacterItems \
         INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
-        INNER JOIN Items ON CharacterItems.item_id = Items.item_id"
+        INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+        ORDER BY CharacterName ASC;"
 
         query3 = "SELECT DISTINCT character_id, \
         name \
-        FROM NonPlayableCharacters"
+        FROM NonPlayableCharacters;"
 
         query4 = "SELECT DISTINCT item_id, \
         name \
-        FROM Items"
+        FROM Items;"
 
         cur = mysql.connection.cursor()
         cur.execute(query2)
@@ -63,7 +75,6 @@ def get_characteritems():
         cur.execute(query4)
         itemSet = cur.fetchall()
 
-        print(charSet)
         return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
 @app.route('/characteritems/create', methods = ['POST'])
