@@ -1,7 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, json, redirect, request
+from flask_mysqldb import MySQL
+import os
 
 
 app = Flask(__name__)
+
+# database connection
+app.config["MYSQL_HOST"] = "localhost"
+app.config["MYSQL_USER"] = "test"
+app.config["MYSQL_PASSWORD"] = "test"
+app.config["MYSQL_DB"] = "local"
+app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+
+
+mysql = MySQL(app)
 
 @app.route('/index')
 def index():
@@ -20,10 +32,25 @@ def get_characters():
     return render_template("characters.html")
 
 # Character Item CRUD Functions
-@app.route('/characteritems')
+@app.route('/characteritems', methods=["POST", "GET"])
 def get_characteritems():
     """ This function implements the Retrieve funciton of CRUD for Character Items"""
-    return render_template("characteritems.html")
+    if request.method == "POST":
+        return render_template("characteritems.html")
+    if request.method == "GET":
+        query2 = "SELECT character_items_id AS ID, \
+        CharacterItems.character_id AS CharacterID, \
+        NonPlayableCharacters.name AS CharacterName, \
+        CharacterItems.item_id AS ItemID, \
+        Items.name AS itemName \
+        FROM CharacterItems \
+        INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
+        INNER JOIN Items ON CharacterItems.item_id = Items.item_id"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        charitem_data = cur.fetchall()
+        print(charitem_data)
+        return render_template("characteritems.j2", charitems=charitem_data)
 
 @app.route('/characteritems/create', methods = ['POST'])
 def create_characteritems():

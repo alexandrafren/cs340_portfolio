@@ -1,0 +1,34 @@
+<h3>Character Items</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            {% for key in charitems[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in charitems %}
+            <tr>
+                <td><a href="/characteritems/update/{{entry.ID}}">Edit</a></td>
+                <td><a href="/characteritems/delete/{{entry.ID}}">Delete</a></td>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/characteritems/create" method="POST">
+        Add a Character Item:
+        <label for="character_id">Character ID: </label>
+        <input type="text" id="character_id" name="character_id">
+        <label for="item_id">Item ID: </label>
+        <input type="text" id="item_id" name="item_id">
+        <input type="submit" value="Submit"
+    </form>
+{% endblock %}
