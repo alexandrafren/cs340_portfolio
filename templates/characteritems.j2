@@ -25,10 +25,18 @@
     <br>
     <form action="/characteritems/create" method="POST">
         Add a Character Item:
-        <label for="character_id">Character ID: </label>
-        <input type="text" id="character_id" name="character_id">
-        <label for="item_id">Item ID: </label>
-        <input type="text" id="item_id" name="item_id">
-        <input type="submit" value="Submit"
+        <label for="character">Character Name</label>
+        <select id="character" name="character">
+            {% for char in charSet %}
+            <option value="{{char.character_id}}">{{char.name}}</option>
+            {% endfor %}
+        </select>
+        <label for="item">Item Name</label>
+        <select id="item" name="item">
+            {% for item in itemSet %}
+            <option value="{{item.item_id}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}

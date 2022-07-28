@@ -46,11 +46,25 @@ def get_characteritems():
         FROM CharacterItems \
         INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
         INNER JOIN Items ON CharacterItems.item_id = Items.item_id"
+
+        query3 = "SELECT DISTINCT character_id, \
+        name \
+        FROM NonPlayableCharacters"
+
+        query4 = "SELECT DISTINCT item_id, \
+        name \
+        FROM Items"
+
         cur = mysql.connection.cursor()
         cur.execute(query2)
         charitem_data = cur.fetchall()
-        print(charitem_data)
-        return render_template("characteritems.j2", charitems=charitem_data)
+        cur.execute(query3)
+        charSet = cur.fetchall()
+        cur.execute(query4)
+        itemSet = cur.fetchall()
+
+        print(charSet)
+        return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
 @app.route('/characteritems/create', methods = ['POST'])
 def create_characteritems():
