@@ -127,11 +127,38 @@ def update_characteritems(id):
 def delete_characteritems(id):
     """ This function implements the Delete function of CRUD for Character Items. """
     if request.method == "POST":
-        query1 = f"DELETE FROM CharacterItems WHERE CharacterItems.id = {id};"
+        query1 = f"DELETE FROM CharacterItems WHERE CharacterItems.character_items_id = {id};"
         cur = mysql.connection.cursor()
         cur.execute(query1)
         mysql.connection.commit()
-    return redirect("/characteritems.html")
+
+        query2 = "SELECT character_items_id AS ID, \
+        CharacterItems.character_id AS CharacterID, \
+        NonPlayableCharacters.name AS CharacterName, \
+        CharacterItems.item_id AS ItemID, \
+        Items.name AS itemName \
+        FROM CharacterItems \
+        INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
+        INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+        ORDER BY CharacterName ASC;"
+
+        query3 = "SELECT DISTINCT character_id, \
+        name \
+        FROM NonPlayableCharacters;"
+
+        query4 = "SELECT DISTINCT item_id, \
+        name \
+        FROM Items;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        charitem_data = cur.fetchall()
+        cur.execute(query3)
+        charSet = cur.fetchall()
+        cur.execute(query4)
+        itemSet = cur.fetchall()
+
+        return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
 @app.route('/shops')
 def get_shops():
