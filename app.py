@@ -103,7 +103,7 @@ def update_characteritems(id):
         FROM CharacterItems \
         INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
         INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
-        WHERE CharacterItems.id = {id};"
+        WHERE CharacterItems.character_items_id = {id};"
 
         query3 = "SELECT DISTINCT character_id, \
         name \
