@@ -1,15 +1,15 @@
 {% extends "navbar.html" %}
 {% block content %}
-<form action="/characteritems/update/{{item.id}}" method="POST">
+<form action="/characteritems/update/{{charitem[0].ID}}" method="POST">
     Update Character Item:
-    Current Character Name: {{item.CharacterName}}
+    Current Character Name: {{charitem[0].CharacterName}}
     <label for="character">New Character Name</label>
     <select id="character" name="character">
         {% for char in charSet %}
         <option value="{{char.character_id}}">{{char.name}}</option>
         {% endfor %}
     </select>
-    Current Item Name: {{item.itemName}}
+    Current Item Name: {{charitem[0].itemName}}
     <label for="item">Item Name</label>
     <select id="item" name="item">
         {% for item in itemSet %}

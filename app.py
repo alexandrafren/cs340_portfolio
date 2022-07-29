@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 # database connection
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "test"
-app.config["MYSQL_PASSWORD"] = "test"
-app.config["MYSQL_DB"] = "local"
+app.config["MYSQL_USER"] = "cs340_frena"
+app.config["MYSQL_PASSWORD"] = "2585"
+app.config["MYSQL_DB"] = "cs340_frena"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -77,7 +77,7 @@ def get_characteritems():
 
         return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
-@app.route('/characteritems/update/<int:id>', methods = ['GET', 'POST'])
+@app.route('/characteritems/update/<int:id>', methods = ['POST','GET'])
 def update_characteritems(id):
     """ This function implements the Update function of CRUD for Character Items. """
     if request.method == "POST":
@@ -86,7 +86,7 @@ def update_characteritems(id):
             itemID = request.form["item"]
             
             query1 = f"UPDATE CharacterItems \
-            SET character_id = {charID}, item = {itemID} \
+            SET character_id = {charID}, item_id = {itemID} \
             WHERE character_items_id = {id};"
 
             cur = mysql.connection.cursor()
@@ -118,7 +118,6 @@ def update_characteritems(id):
             charSet = cur.fetchall()
             cur.execute(query4)
             itemSet = cur.fetchall()
-
             return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
     if request.method == "GET":
         query2 = f"SELECT character_items_id AS ID, \
@@ -183,7 +182,6 @@ def delete_characteritems(id):
         charSet = cur.fetchall()
         cur.execute(query4)
         itemSet = cur.fetchall()
-
         return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
 @app.route('/shops')
