@@ -273,6 +273,7 @@ def get_regions():
 
 @app.route('/items', methods=["POST", "GET"])
 def get_items():
+    # ADD SEARCH HANDLING
     if request.method == "POST":
         if request.form.get("name"):
             name = request.form["name"]
