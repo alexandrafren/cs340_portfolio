@@ -294,8 +294,39 @@ def get_items():
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-
     return render_template("items.html", itemSet=itemSet)
+
+@app.route('/items/update/<int:id>', methods=["POST", "GET"])
+def update_items(id):
+    if request.method == "POST":
+        # update the character
+        # render the original page
+        query2 = "SELECT * FROM Items \
+            ORDER BY Items.name ASC;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        itemSet = cur.fetchall()
+        return render_template("items.html", itemSet=itemSet)
+    if request.method == "GET":
+        # get data needed for a form
+        #display the form
+        return render_template("items.html")
+
+@app.route('/items/delete/<int:id>', methods=["POST"])
+def delete_items(id):
+    if request.method == "POST":
+        query1 = f"DELETE FROM Items WHERE Items.item_id = {id}"
+
+        query2 = "SELECT * FROM Items \
+            ORDER BY Items.name ASC;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        mysql.connection.commit()
+        cur.execute(query2)
+        itemSet = cur.fetchall()
+        return render_template("items.html", itemSet=itemSet)
 
 
 

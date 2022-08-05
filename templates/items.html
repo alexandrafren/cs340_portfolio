@@ -5,19 +5,17 @@
 <p> Search Functionality Implemented Here </p>
     <table>
         <tr>
+            <th></th>
+            <th></th>
             {% for key in itemSet[0].keys() %}
             <th>{{ key }}</th>
             {% endfor %}
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Wild Horseradish</td>
-            <td>A spicy root found in the spring.</td>
-            <td>Spring</td>
-        </tr>
         <tbody>
             {% for entry in itemSet %}
             <tr>
+                <td><form action="/characteritems/update/{{entry.ID}}" method="GET"><input type="submit" value="Edit"></form></td>
+                <td><form action="/characteritems/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
                 {% for key in entry.keys() %}
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
