@@ -27,9 +27,46 @@ def get_bundles():
 def get_bundleitems():
     return render_template("bundleitems.html")
 
-@app.route('/characters')
+@app.route('/characters', methods=["POST", "GET"])
 def get_characters():
-    return render_template("characters.html")
+    if request.method == "POST":
+        if request.form.get("character"):
+            charID = request.form["character"]
+            itemID = request.form["item"]
+            
+            query1 = f"INSERT INTO CharacterItems (character_id, item_id) \
+            VALUES ({charID}, {itemID});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.method == "GET":
+        query2 = "SELECT Character.character_id AS ID, \
+        Character.name AS CharacterName, \
+        Character.description AS CharacterDescription, \
+        Character.occupation AS CharacterOccupation, \
+        Character.birthday AS CharacterBirthday, \
+        Region.name AS CharacterRegion, \
+        Character.is_romanceable AS CharacterIsRomanceable, \
+        FROM CharacterItems \
+        INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
+        INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+        ORDER BY CharacterName ASC;"
+
+        query3 = "SELECT DISTINCT region_id, \
+        name \
+        FROM Regions;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        char_data = cur.fetchall()
+        cur.execute(query3)
+        regionSet = cur.fetchall()
+
+        return render_template("characters.html", charSet=char_data, regionSet=regionSet)
+
 
 # Character Item CRUD Functions
 @app.route('/characteritems', methods=["POST", "GET"])
