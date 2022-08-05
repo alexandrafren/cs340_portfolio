@@ -30,12 +30,16 @@ def get_bundleitems():
 @app.route('/characters', methods=["POST", "GET"])
 def get_characters():
     if request.method == "POST":
-        if request.form.get("character"):
-            charID = request.form["character"]
-            itemID = request.form["item"]
+        if request.form.get("name"):
+            name = request.form["name"]
+            desc = request.form["description"]
+            occ = request.form["occupation"]
+            bday = request.form["birthday"]
+            region_id = request.form["region"]
+            romanceable = request.form["romanceable"]
             
-            query1 = f"INSERT INTO CharacterItems (character_id, item_id) \
-            VALUES ({charID}, {itemID});"
+            query1 = f"INSERT INTO Characters (name, description, occupation, birthday, region, is_romanceable) \
+            VALUES ({name}, {desc}, {occ}, {bday}, {region_id}, {romanceable});"
 
             cur = mysql.connection.cursor()
             cur.execute(query1)
@@ -50,9 +54,8 @@ def get_characters():
         Character.birthday AS CharacterBirthday, \
         Region.name AS CharacterRegion, \
         Character.is_romanceable AS CharacterIsRomanceable, \
-        FROM CharacterItems \
-        INNER JOIN NonPlayableCharacters ON CharacterItems.character_id = NonPlayableCharacters.character_id \
-        INNER JOIN Items ON CharacterItems.item_id = Items.item_id \
+        FROM Characters\
+        INNER JOIN Regions ON Characters.region_id = Regions.region_id \
         ORDER BY CharacterName ASC;"
 
         query3 = "SELECT DISTINCT region_id, \
@@ -268,9 +271,32 @@ def get_shopitems():
 def get_regions():
     return render_template("regions.html")
 
-@app.route('/items')
+@app.route('/items', methods=["POST", "GET"])
 def get_items():
-    return render_template("items.html")
+    if request.method == "POST":
+        if request.form.get("name"):
+            name = request.form["name"]
+            desc= request.form["description"]
+            seasons = request.form["seasons"]
+
+            query1 = f"INSERT INTO Items (name, description, seasons) \
+            VALUES ({name}, {desc}, {seasons});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.method == "GET":
+        query2 = "SELECT * FROM Items \
+            ORDER BY Items.name ASC;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        itemSet = cur.fetchall()
+
+    return render_template("items.html", itemSet=itemSet)
+
 
 
 if __name__ == '__main__':
