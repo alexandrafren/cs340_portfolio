@@ -3,41 +3,34 @@
 {% block content %}
     <table>
         <tr>
-            <th>ID</th>
-            <th>Shop ID</th>
-            <th>Shop Name</th>
-            <th>Item ID</th>
-            <th>Item Name</th>
+            {% for key in shopItems[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
         </tr>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>Pierre's General Store</td>
-            <td>5</td>
-            <td>Kale Seeds</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>1</td>
-            <td>Pierre's General Store</td>
-            <td>6</td>
-            <td>Wheat Seeds</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>1</td>
-            <td>Pierre's General Store</td>
-            <td>7</td>
-            <td>Blueberry Seeds</td>
-        </tr>
+        <tbody>
+            {% for entry in shopItems %}
+            <tr>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
     </table>
 
     <br>
-    <form>
+    <form action="/shopitems" method="POST">
         Add a Shop Item:
-        <label for="shop_id">Shop ID: </label>
-        <input type="text" id="shop_id" name="shop_id">
-        <label for="item_id">Item ID: </label>
-        <input type="text" id="item_id" name="item_id">
+        <label for="shop">Shop Name: </label>
+        <select id="shop" name="shop">
+            {% for shop in shopSet %}
+            <option value="{{shop.shop_id}}">{{shop.name}}</option>
+        </select>
+        <label for="item">Item: </label>
+        <select id="item" name="item">
+            {% for item in itemSet %}
+            <option value="{{item.item_id}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}

@@ -188,9 +188,44 @@ def delete_characteritems(id):
 def get_shops():
     return render_template("shops.html")
 
-@app.route('/shopitems')
+@app.route('/shopitems', methods=["POST", "GET"])
 def get_shopitems():
-    return render_template("shopitems.html")
+    if request.method == "POST":
+        if request.form.get("shop"):
+            shopID = request.form["shop"]
+            itemID = request.form["item"]
+
+            query1 = f"INSERT INTO ShopItems (shop_id, item_id) \
+            VALUES ({shopID}, {itemID});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.methhod == "GET":
+        query2 = "SELECT shop_items_id AS ID, \
+            ShopItems.shop_id AS ShopID, \
+            Shops.name AS ShopName, \
+            ShopItems.item_id AS ItemID, \
+            Items.name AS ItemName, \
+            FROM ShopItems \
+            INNER JOIN Shops ON ShopItems.shop_id = Shops.shop_id \
+            INNER JOIN Items on ShopItems.item_id = Items.item_id \
+            ORDER BY ShopName ASC;"
+        
+        query3 = "SELECT DISTINCT shop_id, name FROM Shops;"
+        query4 = "SELECT DISTINCT item_id, name FROM Items;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shopitem_data = cur.fetchall()
+        cur.execute(query3)
+        shopSet = cur.fetchall()
+        cur.execute(query4)
+        itemSet = cur.fetchall()
+
+    return render_template("shopitems.html", shopItems=shopitem_data, shopSet=shopSet, itemSet=itemSet)
 
 @app.route('/regions')
 def get_regions():
