@@ -1,0 +1,24 @@
+{% extends "navbar.html" %}
+{% block content %}
+<form action="/items/update/{{itemSet[0].ID}}" method="POST">
+    Update Item:
+
+    Current Item Name: {{itemSet[0].name}}
+    <label for="name">New Item Name</label>
+    <input type="text" id="name" name="name">
+
+    Current Item Description: {{itemSet[0].description}}
+    <label for="item">New Item Description</label>
+    <input type="text" id="description" name="description">
+
+    Current Item Seasons: {{itemSet[0].seasons}}
+    <label for="seasons">New Item Seasons</label>
+    <select name="seasons" id="seasons" multiple>
+        <option value="Spring">Spring</option>
+        <option value="Summer">Summer</option>
+        <option value="Fall">Fall</option>
+        <option value="Winter">Winter</option>
+    </select>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
