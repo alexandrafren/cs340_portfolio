@@ -12,10 +12,11 @@ INSERT INTO Bundles (name, description)
 VALUES (:name, :description);
 
 -- Get all bundles
-SELECT bundle_id,
-    name,
-    description
-FROM Bundles;
+SELECT Bundles.bundle_id AS ID,
+        Bundles.name AS Name,
+        Bundles.description AS Description
+        FROM Bundles
+        ORDER BY ID ASC;
 
 -- -----------------------------------------------------
 -- BundleItems Operations
@@ -26,13 +27,25 @@ INSERT INTO BundleItems (bundle_id, item_id)
 VALUES (:bundle_id, :item_id);
 
 -- Get all bundle items with names
-SELECT bundle_items_id,
-    Bundles.name AS bundleName,
-    Items.name AS itemName
-FROM BundleItems
-    INNER JOIN Bundles ON BundleItems.bundle_id = Bundles.bundle_id
-    INNER JOIN Items ON BundleItems.item_id = Items.item_id
-ORDER BY bundleName ASC;
+SELECT BundleItems.bundle_items_id AS ID,
+        BundleItems.bundle_id AS BundleID,
+        Bundles.name AS BundleName,
+        BundleItems.item_id AS ItemID,
+        Items.name AS itemName
+        FROM BundleItems
+        INNER JOIN Bundles ON BundleItems.bundle_id = Bundles.bundle_id
+        INNER JOIN Items ON BundleItems.item_id = Items.item_id
+        ORDER BY BundleName ASC;
+
+-- Get bundles
+SELECT DISTINCT bundle_id,
+        name
+        FROM Bundles;
+
+-- Get items
+SELECT DISTINCT item_id,
+        name
+        FROM Items;
 
 -- -----------------------------------------------------
 -- CharacterItems Operations
@@ -151,11 +164,11 @@ VALUES (
     );
 
 -- Get all Regions
-SELECT region_id,
-        name,
-        description
-FROM Regions
-ORDER BY name ASC;
+SELECT Regions.region_id AS ID,
+        Regions.name AS Name,
+        Regions.description AS Description
+        FROM Regions
+        ORDER BY ID ASC;
 
 -- -----------------------------------------------------
 -- Shops Operations
@@ -178,14 +191,26 @@ VALUES (
     );
 
 -- Get all Shops
-SELECT shop_id,
-        name,
-        operating_hours,
-        shop_character_id,
-        region_id,
-        description
-FROM Shops
-ORDER BY name ASC;
+SELECT Shops.shop_id AS ID,
+        Shops.name AS Name,
+        Shops.description AS Description,
+        NonPlayableCharacters.name AS Shopkeeper,
+        Regions.name AS Region,
+        Shops.operating_hours AS OperatingHours
+        FROM Shops
+        INNER JOIN NonPlayableCharacters ON Shops.shop_character_id = NonPlayableCharacters.character_id
+        INNER JOIN Regions ON Shops.region_id = Regions.region_id
+        ORDER BY ID ASC;
+
+-- Get shopkeepers
+SELECT DISTINCT character_id,
+        name
+        FROM NonPlayableCharacters;
+
+-- Get shop regions
+SELECT DISTINCT region_id,
+        name
+        FROM Regions;
 
 -- -----------------------------------------------------
 -- ShopItems Operations
