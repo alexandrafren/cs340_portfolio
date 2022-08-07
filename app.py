@@ -94,9 +94,49 @@ def get_bundleitems():
 
         return render_template("bundleitems.j2", bundleItems=bundleItems, bundleSet=bundleSet, itemSet=itemSet)
 
-@app.route('/characters')
+@app.route('/characters', methods=["POST", "GET"])
 def get_characters():
-    return render_template("characters.html")
+    if request.method == "POST":
+        if request.form.get("name"):
+            name = request.form["name"]
+            desc = request.form["description"]
+            occ = request.form["occupation"]
+            bday = request.form["birthday"]
+            region_id = request.form["region"]
+            romanceable = request.form["romanceable"]
+            
+            query1 = f"INSERT INTO Characters (name, description, occupation, birthday, region, is_romanceable) \
+            VALUES ({name}, {desc}, {occ}, {bday}, {region_id}, {romanceable});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.method == "GET":
+        query2 = "SELECT Character.character_id AS ID, \
+        Character.name AS CharacterName, \
+        Character.description AS CharacterDescription, \
+        Character.occupation AS CharacterOccupation, \
+        Character.birthday AS CharacterBirthday, \
+        Region.name AS CharacterRegion, \
+        Character.is_romanceable AS CharacterIsRomanceable, \
+        FROM Characters\
+        INNER JOIN Regions ON Characters.region_id = Regions.region_id \
+        ORDER BY CharacterName ASC;"
+
+        query3 = "SELECT DISTINCT region_id, \
+        name \
+        FROM Regions;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        char_data = cur.fetchall()
+        cur.execute(query3)
+        regionSet = cur.fetchall()
+
+        return render_template("characters.html", charSet=char_data, regionSet=regionSet)
+
 
 # Character Item CRUD Functions
 @app.route('/characteritems', methods=["POST", "GET"])
@@ -301,9 +341,44 @@ def get_shops():
 
     return
 
-@app.route('/shopitems')
+@app.route('/shopitems', methods=["POST", "GET"])
 def get_shopitems():
-    return render_template("shopitems.html")
+    if request.method == "POST":
+        if request.form.get("shop"):
+            shopID = request.form["shop"]
+            itemID = request.form["item"]
+
+            query1 = f"INSERT INTO ShopItems (shop_id, item_id) \
+            VALUES ({shopID}, {itemID});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.methhod == "GET":
+        query2 = "SELECT shop_items_id AS ID, \
+            ShopItems.shop_id AS ShopID, \
+            Shops.name AS ShopName, \
+            ShopItems.item_id AS ItemID, \
+            Items.name AS ItemName, \
+            FROM ShopItems \
+            INNER JOIN Shops ON ShopItems.shop_id = Shops.shop_id \
+            INNER JOIN Items on ShopItems.item_id = Items.item_id \
+            ORDER BY ShopName ASC;"
+        
+        query3 = "SELECT DISTINCT shop_id, name FROM Shops;"
+        query4 = "SELECT DISTINCT item_id, name FROM Items;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shopitem_data = cur.fetchall()
+        cur.execute(query3)
+        shopSet = cur.fetchall()
+        cur.execute(query4)
+        itemSet = cur.fetchall()
+
+    return render_template("shopitems.html", shopItems=shopitem_data, shopSet=shopSet, itemSet=itemSet)
 
 @app.route('/regions', methods=["POST", "GET"])
 def get_regions():
@@ -337,9 +412,77 @@ def get_regions():
 
     return
 
-@app.route('/items')
+@app.route('/items', methods=["POST", "GET"])
 def get_items():
-    return render_template("items.html")
+    # ADD SEARCH HANDLING
+    if request.method == "POST":
+        if request.form.get("name"):
+            name = request.form["name"]
+            desc= request.form["description"]
+            seasons = request.form["seasons"]
+
+            query1 = f"INSERT INTO Items (name, description, seasons) \
+            VALUES ({name}, {desc}, {seasons});"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+
+        return redirect(request.url)
+    if request.method == "GET":
+        query2 = "SELECT * FROM Items \
+            ORDER BY Items.name ASC;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        itemSet = cur.fetchall()
+    return render_template("items.html", itemSet=itemSet)
+
+@app.route('/items/update/<int:id>', methods=["POST", "GET"])
+def update_items(id):
+    if request.method == "POST":
+        if request.form["name"]:
+            name = request.form["name"]
+            desc = request.form["desc"]
+            seasons = request.form["seasons"]
+
+            query1 = f"UPDATE Items \
+            SET name={name}, description={desc}, seasons={seasons} \
+            WHERE item_id = {id}"
+            query2 = "SELECT * FROM Items \
+                ORDER BY Items.name ASC;"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            mysql.connection.commit()
+            cur.execute(query2)
+            itemSet = cur.fetchall()
+            return render_template("items.html", itemSet=itemSet)
+    if request.method == "GET":
+        query3 = f"SELECT * FROM Items \
+        WHERE Items.item_id = {id};"
+        
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        itemSet = cur.fetchall()
+        #display the form
+        return render_template("updateitems.html", itemSet=itemSet)
+
+@app.route('/items/delete/<int:id>', methods=["POST"])
+def delete_items(id):
+    if request.method == "POST":
+        query1 = f"DELETE FROM Items WHERE Items.item_id = {id}"
+
+        query2 = "SELECT * FROM Items \
+            ORDER BY Items.name ASC;"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        mysql.connection.commit()
+        cur.execute(query2)
+        itemSet = cur.fetchall()
+        return render_template("items.html", itemSet=itemSet)
+
 
 
 if __name__ == '__main__':

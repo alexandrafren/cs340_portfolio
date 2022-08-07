@@ -3,71 +3,39 @@
 {% block content %}
     <table>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Occupation</th>
-            <th>Birthday</th>
-            <th>Region</th>
-            <th>Romanceable?</th>
-            <th>Items</th>
+            {% for key in charSet[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Krobus</td>
-            <td>Krobus is the only friendly monster that the player encounters. He can become a roommate.</td>
-            <td>Shopkeeper at Krobus' Shop</td>
-            <td>Winter 1</td>
-            <td>The Sewers</td>
-            <td>FALSE</td>
-            <td>Diamond, Iridium Bar, Pumpkin, Void Egg, Void Mayonnaise, Wild Horseradish</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Vincent</td>
-            <td>The youngest son of Jodi and Kent, brother to Sam. Is best friends with Jas.</td>
-            <td>NULL</td>
-            <td>Spring 10</td>
-            <td>Pelican Town</td>
-            <td>FALSE</td>
-            <td>Cranberry Candy, Ginger Ale, Grape, Pink Cake, Snail</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Pierre</td>
-            <td>Runs the General Store in town. Is married to Caroline, and the father of Abigail.</td>
-            <td>Shoperkeeper at General Store</td>
-            <td>Spring 26</td>
-            <td>Pelican Town</td>
-            <td>FALSE</td>
-            <td>Fried Calamari</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Willy</td>
-            <td>Willy runs the Fish Shop and spends most of his time fishing.</td>
-            <td>Fisherman</td>
-            <td>Summer 24</td>
-            <td>The Beach</td>
-            <td>FALSE</td>
-            <td>Catfish, Diamond, Iridium Bar, Mead, Octopus, Pumpkin, Sea Cucumber, Sturgeon</td>
-        </tr>
+        <tbody>
+            {% for entry in charSet %}
+            <tr>
+                {% for key in entry.keys() %} 
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
     </table>
 
     <br>
-    <form>
+    <form action="/characters" method="POST">
         Add a Character:
-        <label for="character_name">Name: </label>
-        <input type="text" id="character_name" name="character_name">
-        <label for="character_description">Description: </label>
-        <input type="text" id="character_description" name="character_description">
-        <label for="character_occupation">Occupation: </label>
-        <input type="text" id="character_occupation" name="character_occupation">
-        <label for="character_birthday">Birthday: </label>
-        <input type="text" id="character_birthday" name="character_birthday">
-        <label for="character_region">Region: </label>
-        <input type="text" id="character_region" name="character_region">
+        <label for="name" name="name">Character Name: </label>
+        <input type="text" id="name" name="name">
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description">
+        <label for="occupation">Occupation: </label>
+        <input type="text" id="occupation" name="occupation">
+        <label for="birthday">Birthday (Format Winter 23, Fall 16, etc.): </label>
+        <input type="text" id="birthday" name="birthday">
+        <label for="region">Region: </label>
+        <select id="region" name="region">
+            {% for item in regionSet %}
+            <option value="{{item.item_id}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
         Romanceable?
         <input type="radio" id="romanceable" name="romanceable" value="romanceable">
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}

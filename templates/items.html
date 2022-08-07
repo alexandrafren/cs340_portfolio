@@ -5,51 +5,38 @@
 <p> Search Functionality Implemented Here </p>
     <table>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Seasons</th>
+            <th></th>
+            <th></th>
+            {% for key in itemSet[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Wild Horseradish</td>
-            <td>A spicy root found in the spring.</td>
-            <td>Spring</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Grape</td>
-            <td>A sweet cluster of fruit.</td>
-            <td>Summer, Fall</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Common Mushroom</td>
-            <td>Slighly nutty, with a good texture</td>
-            <td>Fall</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Crystal Fruit</td>
-            <td>A delicate fruit that pops up from the snow.</td>
-            <td>Winter</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>Kale Seeds</td>
-            <td>Plant these in the Spring. Take 6 days to mature. Harvest with a Scythe</td>
-            <td>Spring</td>
-        </tr>
+        <tbody>
+            {% for entry in itemSet %}
+            <tr>
+                <td><form action="/characteritems/update/{{entry.ID}}" method="GET"><input type="submit" value="Edit"></form></td>
+                <td><form action="/characteritems/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
     </table>
 
     <br>
-    <form>
+    <form action="items" method="POST">
         Add an Item:
-        <label for="item_name">Name: </label>
-        <input type="text" id="item_name" name="item_name">
-        <label for="item_description">Item: </label>
-        <input type="text" id="item_description" name="item_description">
-        <label for="item_season">Seasons: </label>
-        <input type="text" id="item_season" name="item_season">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name">
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description">
+        <label for="seasons">Seasons: </label>
+        <select name="seasons" id="seasons" multiple>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+            <option value="Fall">Fall</option>
+            <option value="Winter">Winter</option>
+        </select>
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}
