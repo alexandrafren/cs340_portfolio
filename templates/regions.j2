@@ -1,0 +1,30 @@
+<h3>Regions</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            {% for key in regions[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in regions %}
+            <tr>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/regions" method="POST">
+        Add a Region:
+        <label for="regName">Name: </label>
+        <input type="text" id="regName" name="regName">
+        <label for="regDesc">Description: </label>
+        <input type="text" id="regDesc" name="regDesc">
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

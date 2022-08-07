@@ -1,0 +1,46 @@
+<h3>Shops</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            {% for key in shopsData[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in shopsData %}
+            <tr>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/shops" method="POST">
+        Add a Shop:
+        <label for="shopName">Shop Name</label>
+        <input type="text" id="shopName" name="shopName"><br>
+        <label for="shopDesc">Shop Description</label><br>
+        <textarea name="shopDesc" rows="5" cols="40">
+        Shop Description
+        </textarea><br>
+        <label for="shopkeeper">Shopkeeper</label>
+        <select id="shopkeeper" name="shopkeeper">
+            {% for char in charSet %}
+            <option value="{{char.character_id}}">{{char.name}}</option>
+            {% endfor %}
+        </select><br>
+        <label for="region">Region</label>
+        <select id="region" name="region">
+            {% for reg in regSet %}
+            <option value="{{reg.region_id}}">{{reg.name}}</option>
+            {% endfor %}
+        </select><br>
+        <label for="opHours">Operating Hours</label>
+        <input type="text" id="opHours" name="opHours"><br>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

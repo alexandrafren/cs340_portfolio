@@ -1,0 +1,30 @@
+<h3>Bundles</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            {% for key in bundles[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in bundles %}
+            <tr>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/bundles" method="POST">
+        Add a Bundle:
+        <label for="bundleName">Name: </label>
+        <input type="text" id="bundleName" name="bundleName">
+        <label for="bundleDesc">Description: </label>
+        <input type="text" id="bundleDesc" name="bundleDesc">
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
