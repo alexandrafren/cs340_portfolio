@@ -6,10 +6,10 @@ import os
 app = Flask(__name__)
 
 # database connection
-app.config["MYSQL_HOST"] = "127.0.0.1"
-app.config["MYSQL_USER"] = "test"
-app.config["MYSQL_PASSWORD"] = "abc123"
-app.config["MYSQL_DB"] = "local"
+app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
+app.config["MYSQL_USER"] = "cs340_frena"
+app.config["MYSQL_PASSWORD"] = "2585"
+app.config["MYSQL_DB"] = "cs340_frena"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
