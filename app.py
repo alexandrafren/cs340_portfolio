@@ -356,11 +356,11 @@ def get_shopitems():
 
         return redirect(request.url)
     if request.methhod == "GET":
-        query2 = "SELECT shop_items_id AS ID, \
+        query2 = "SELECT ShopItems.shop_items_id AS ID, \
             ShopItems.shop_id AS ShopID, \
             Shops.name AS ShopName, \
             ShopItems.item_id AS ItemID, \
-            Items.name AS ItemName, \
+            Items.name AS ItemName \
             FROM ShopItems \
             INNER JOIN Shops ON ShopItems.shop_id = Shops.shop_id \
             INNER JOIN Items on ShopItems.item_id = Items.item_id \
@@ -429,8 +429,12 @@ def get_items():
 
         return redirect(request.url)
     if request.method == "GET":
-        query2 = "SELECT * FROM Items \
-            ORDER BY Items.name ASC;"
+        query2 = "SELECT Items.item_id AS ID, \
+            Items.name AS ItemName, \
+            Items.seasons AS ItemSeasons, \
+            Items.description AS ItemDescription \
+            FROM Items \
+            ORDER BY ID ASC;"
 
         cur = mysql.connection.cursor()
         cur.execute(query2)
