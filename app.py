@@ -430,6 +430,7 @@ def get_items():
         return redirect(request.url)
     """
     if request.method == "GET":
+        """
         query2 = "SELECT Items.item_id AS ID, \
             Items.name AS ItemName, \
             Items.seasons AS ItemSeasons, \
@@ -440,7 +441,8 @@ def get_items():
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-        return itemSet
+        """
+        return "item"
         #return render_template("items.j2", itemSet=itemSet)
 
 @app.route('/items/update/<int:id>', methods=["POST", "GET"])
