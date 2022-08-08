@@ -159,7 +159,7 @@ CREATE TABLE `NonPlayableCharacters` (
 
 LOCK TABLES `NonPlayableCharacters` WRITE;
 /*!40000 ALTER TABLE `NonPlayableCharacters` DISABLE KEYS */;
-INSERT INTO `NonPlayableCharacters` VALUES (1,'Krobus','Krobus\' Shopkeeper','0000-00-00',0,1,'Krobus is the only friendly monster that players encounter. He can become a roommate. '),(2,'Vincent',NULL,'0000-00-00',0,2,'The youngest son of Jodi and Kent, brother to Sam. Is best friends with Jas. '),(3,'Pierre','General Store Shopkeeper','0000-00-00',0,2,'Runs the General Store in town. Is married to Caroline, and the father of Abigail. '),(4,'Willy','Fisherman','0000-00-00',0,3,'Willy runs the Fish Shop and spends most of his time fishing.');
+INSERT INTO `NonPlayableCharacters` VALUES (1,'Krobus','Krobus\' Shopkeeper','Winter 1',0,1,'Krobus is the only friendly monster that players encounter. He can become a roommate. '),(2,'Vincent',NULL,'Spring 10',0,2,'The youngest son of Jodi and Kent, brother to Sam. Is best friends with Jas. '),(3,'Pierre','General Store Shopkeeper','Spring 26',0,2,'Runs the General Store in town. Is married to Caroline, and the father of Abigail. '),(4,'Willy','Fisherman','Summer 24',0,3,'Willy runs the Fish Shop and spends most of his time fishing.');
 /*!40000 ALTER TABLE `NonPlayableCharacters` ENABLE KEYS */;
 UNLOCK TABLES;
 

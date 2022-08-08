@@ -1,7 +1,9 @@
+""" This code was developed following the provided guide:
+    https://github.com/osu-cs340-ecampus/flask-starter-app#readme"""
+
 from flask import Flask, render_template, json, redirect, request
 from flask_mysqldb import MySQL
 import os
-
 
 app = Flask(__name__)
 
