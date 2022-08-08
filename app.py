@@ -355,7 +355,7 @@ def get_shopitems():
             mysql.connection.commit()
 
         return redirect(request.url)
-    if request.methhod == "GET":
+    if request.method == "GET":
         query2 = "SELECT ShopItems.shop_items_id AS ID, \
             ShopItems.shop_id AS ShopID, \
             Shops.name AS ShopName, \

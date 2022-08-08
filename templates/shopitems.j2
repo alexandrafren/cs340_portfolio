@@ -1,0 +1,36 @@
+<h3>Shop Items</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            {% for key in shopItems[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in shopItems %}
+            <tr>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/shopitems" method="POST">
+        Add a Shop Item:
+        <label for="shop">Shop Name: </label>
+        <select id="shop" name="shop">
+            {% for shop in shopSet %}
+            <option value="{{shop.shop_id}}">{{shop.name}}</option>
+        </select>
+        <label for="item">Item: </label>
+        <select id="item" name="item">
+            {% for item in itemSet %}
+            <option value="{{item.item_id}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

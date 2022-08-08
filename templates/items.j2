@@ -1,0 +1,42 @@
+<h3>Items</h3>
+{% extends "navbar.html" %}
+{% block content %}
+
+<p> Search Functionality Implemented Here </p>
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            {% for key in itemSet[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in itemSet %}
+            <tr>
+                <td><form action="/characteritems/update/{{entry.ID}}" method="GET"><input type="submit" value="Edit"></form></td>
+                <td><form action="/characteritems/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
+                {% for key in entry.keys() %}
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <form action="items" method="POST">
+        Add an Item:
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name">
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description">
+        <label for="seasons">Seasons: </label>
+        <select name="seasons" id="seasons" multiple>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+            <option value="Fall">Fall</option>
+            <option value="Winter">Winter</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
