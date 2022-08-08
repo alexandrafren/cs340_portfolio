@@ -14,8 +14,8 @@
         <tbody>
             {% for entry in itemSet %}
             <tr>
-                <td><form action="/characteritems/update/{{entry.ID}}" method="GET"><input type="submit" value="Edit"></form></td>
-                <td><form action="/characteritems/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
+                <td><form action="/items/update/{{entry.ID}}" method="GET"><input type="submit" value="Edit"></form></td>
+                <td><form action="/items/delete/{{entry.ID}}" method="POST"><input type="submit" value="Delete"></form></td>
                 {% for key in entry.keys() %}
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
@@ -24,7 +24,7 @@
     </table>
 
     <br>
-    <form action="items" method="POST">
+    <form action="/items" method="POST">
         Add an Item:
         <label for="name">Name: </label>
         <input type="text" id="name" name="name">
