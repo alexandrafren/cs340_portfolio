@@ -134,7 +134,8 @@ def get_characters():
         char_data = cur.fetchall()
         cur.execute(query3)
         regionSet = cur.fetchall()
-
+        print(char_data)
+        print(regionSet)
         return render_template("characters.j2", charSet=char_data, regionSet=regionSet)
 
 
