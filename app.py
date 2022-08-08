@@ -114,15 +114,15 @@ def get_characters():
 
         return redirect(request.url)
     if request.method == "GET":
-        query2 = "SELECT Character.character_id AS ID, \
-        Character.name AS CharacterName, \
-        Character.description AS CharacterDescription, \
-        Character.occupation AS CharacterOccupation, \
-        Character.birthday AS CharacterBirthday, \
-        Region.name AS CharacterRegion, \
-        Character.is_romanceable AS CharacterIsRomanceable, \
-        FROM Characters\
-        INNER JOIN Regions ON Characters.region_id = Regions.region_id \
+        query2 = "SELECT NonPlayableCharacters.character_id AS ID, \
+        NonPlayableCharacters.name AS CharacterName, \
+        NonPlayableCharacters.description AS CharacterDescription, \
+        NonPlayableCharacters.occupation AS CharacterOccupation, \
+        NonPlayableCharacters.birthday AS CharacterBirthday, \
+        Regions.name AS CharacterRegion, \
+        NonPlayableCharacters.is_romanceable AS CharacterIsRomanceable, \
+        FROM NonPlayableCharacters\
+        INNER JOIN Regions ON NonPlayableCharacters.region_id = Regions.region_id \
         ORDER BY CharacterName ASC;"
 
         query3 = "SELECT DISTINCT region_id, \
