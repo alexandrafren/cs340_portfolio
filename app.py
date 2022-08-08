@@ -430,6 +430,11 @@ def get_items():
         return redirect(request.url)
     """
     if request.method == "GET":
+        query2 = f"SELECT Regions.region_id AS ID, \
+        Regions.name AS Name, \
+        Regions.description AS Description \
+        FROM Regions \
+        ORDER BY ID ASC;"
         """
         query2 = "SELECT Items.item_id AS ID, \
             Items.name AS ItemName, \
@@ -437,12 +442,12 @@ def get_items():
             Items.description AS ItemDescription \
             FROM Items \
             ORDER BY ID ASC;"
-
+        """
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-        """
-        return "item"
+        
+        return itemSet
         #return render_template("items.j2", itemSet=itemSet)
 
 @app.route('/items/update/<int:id>', methods=["POST", "GET"])
