@@ -114,7 +114,7 @@ def get_characters():
 
         return redirect(request.url)
     if request.method == "GET":
-        query2 = "SELECT NonPlayableCharacters.character_id AS ID, \
+        query2 = f"SELECT NonPlayableCharacters.character_id AS ID, \
         NonPlayableCharacters.name AS CharacterName, \
         NonPlayableCharacters.description AS CharacterDescription, \
         NonPlayableCharacters.occupation AS CharacterOccupation, \
