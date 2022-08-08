@@ -6,10 +6,10 @@ import os
 app = Flask(__name__)
 
 # database connection
-app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_frena"
-app.config["MYSQL_PASSWORD"] = "2585"
-app.config["MYSQL_DB"] = "cs340_frena"
+app.config["MYSQL_HOST"] = "localhost"
+app.config["MYSQL_USER"] = "root"
+app.config["MYSQL_PASSWORD"] = "test"
+app.config["MYSQL_DB"] = "mysql_concepts"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -25,7 +25,7 @@ def get_bundles():
         if request.form.get("bundleName"):
             bundleName = request.form["bundleName"]
             bundleDesc = request.form["bundleDesc"]
-            
+
             query1 = f"INSERT INTO Bundles (name, description) \
             VALUES ('{bundleName}', '{bundleDesc}');"
 
@@ -56,7 +56,7 @@ def get_bundleitems():
         if request.form.get("bundle"):
             bundleID = request.form["bundle"]
             itemID = request.form["item"]
-            
+
             query1 = f"INSERT INTO BundleItems (bundle_id, item_id) \
             VALUES ({bundleID}, {itemID});"
 
@@ -100,13 +100,20 @@ def get_characters():
         if request.form.get("name"):
             name = request.form["name"]
             desc = request.form["description"]
-            occ = request.form["occupation"]
+            if request.form["occupation"]:
+                occ = request.form["occupation"]
+            else:
+                occ = None
             bday = request.form["birthday"]
             region_id = request.form["region"]
-            romanceable = request.form["romanceable"]
-            
-            query1 = f"INSERT INTO NonPlayableCharacters (name, description, occupation, birthday, region, is_romanceable) \
-            VALUES ({name}, {desc}, {occ}, {bday}, {region_id}, {romanceable});"
+            if request.form["romanceable"] == "true":
+                romanceable = 1
+            else:
+                romanceable = 0
+
+            query1 = f"INSERT INTO NonPlayableCharacters \
+            (name, description, occupation, birthday, region, is_romanceable) \
+            VALUES ('{name}', '{desc}', '{occ}', '{bday}', {region_id}, {romanceable});"
 
             cur = mysql.connection.cursor()
             cur.execute(query1)
@@ -145,7 +152,7 @@ def get_characteritems():
         if request.form.get("character"):
             charID = request.form["character"]
             itemID = request.form["item"]
-            
+
             query1 = f"INSERT INTO CharacterItems (character_id, item_id) \
             VALUES ({charID}, {itemID});"
 
@@ -183,14 +190,14 @@ def get_characteritems():
 
         return render_template("characteritems.j2", charitems=charitem_data, charSet=charSet, itemSet=itemSet)
 
-@app.route('/characteritems/update/<int:id>', methods = ['POST','GET'])
+@app.route('/characteritems/update/<int:id>', methods=['POST','GET'])
 def update_characteritems(id):
     """ This function implements the Update function of CRUD for Character Items. """
     if request.method == "POST":
         if request.form.get("character"):
             charID = request.form["character"]
             itemID = request.form["item"]
-            
+
             query1 = f"UPDATE CharacterItems \
             SET character_id = {charID}, item_id = {itemID} \
             WHERE character_items_id = {id};"
@@ -198,7 +205,7 @@ def update_characteritems(id):
             cur = mysql.connection.cursor()
             cur.execute(query1)
             mysql.connection.commit()
-            
+
             query2 = "SELECT character_items_id AS ID, \
             CharacterItems.character_id AS CharacterID, \
             NonPlayableCharacters.name AS CharacterName, \
@@ -299,7 +306,7 @@ def get_shops():
             charID = request.form["shopkeeper"]
             regionID = request.form["region"]
             opHours = request.form["opHours"]
-            
+
             query1 = f"INSERT INTO Shops (name, operating_hours, shop_character_id, region_id, description) \
             VALUES ('{shopName}', '{opHours}', {charID}, {regionID}, '{shopDesc}');"
 
@@ -365,7 +372,7 @@ def get_shopitems():
             INNER JOIN Shops ON ShopItems.shop_id = Shops.shop_id \
             INNER JOIN Items on ShopItems.item_id = Items.item_id \
             ORDER BY ShopName ASC;"
-        
+
         query3 = "SELECT DISTINCT shop_id, name FROM Shops;"
         query4 = "SELECT DISTINCT item_id, name FROM Items;"
 
@@ -375,7 +382,7 @@ def get_shopitems():
         cur.execute(query3)
         shopSet = cur.fetchall()
         cur.execute(query4)
-        itemSet = cur.fetchall()    
+        itemSet = cur.fetchall()
         return render_template("shopitems.j2", shopItems=shopitem_data, shopSet=shopSet, itemSet=itemSet)
 
 @app.route('/regions', methods=["POST", "GET"])
@@ -385,7 +392,7 @@ def get_regions():
         if request.form.get("regName"):
             regName = request.form["regName"]
             regDesc = request.form["regDesc"]
-            
+
             query1 = f"INSERT INTO Regions (name, description) \
             VALUES ('{regName}', '{regDesc}');"
 
@@ -410,27 +417,41 @@ def get_regions():
 
     return
 
+@app.route('/searchitems', methods=["POST"])
+def get_searchitems():
+    if request.form.get('searchterm'):
+        searchterm = request.form['searchterm']
+
+        query1 = f"SELECT Items.item_id AS ID, \
+            Items.name AS ItemName, \
+            Items.seasons AS ItemSeasons, \
+            Items.description AS ItemDescription \
+            FROM Items \
+            WHERE Items.name = '{searchterm}';"
+
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        itemSet = cur.fetchall()
+        return render_template("items.j2", itemSet=itemSet)
+
 @app.route('/items', methods=["POST", "GET"])
 def get_items():
     # ADD SEARCH HANDLING
-    """
     if request.method == "POST":
         if request.form.get("name"):
             name = request.form["name"]
-            desc= request.form["description"]
+            desc = request.form["description"]
             seasons = request.form["seasons"]
 
             query1 = f"INSERT INTO Items (name, description, seasons) \
-            VALUES ({name}, {desc}, {seasons});"
+            VALUES ('{name}', '{desc}', '{seasons}');"
 
             cur = mysql.connection.cursor()
             cur.execute(query1)
             mysql.connection.commit()
 
         return redirect(request.url)
-    """
     if request.method == "GET":
-        """
         query2 = "SELECT Items.item_id AS ID, \
             Items.name AS ItemName, \
             Items.seasons AS ItemSeasons, \
@@ -440,22 +461,25 @@ def get_items():
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-        """
         return render_template("items.j2", itemSet=itemSet)
 
 @app.route('/items/update/<int:id>', methods=["POST", "GET"])
 def update_items(id):
     if request.method == "POST":
-        if request.form["name"]:
+        if request.form.get("name"):
             name = request.form["name"]
             desc = request.form["desc"]
             seasons = request.form["seasons"]
 
             query1 = f"UPDATE Items \
-            SET name={name}, description={desc}, seasons={seasons} \
+            SET name='{name}', description='{desc}', seasons='{seasons}' \
             WHERE item_id = {id}"
-            query2 = "SELECT * FROM Items \
-                ORDER BY Items.name ASC;"
+            query2 = "SELECT Items.item_id AS ID, \
+            Items.name AS ItemName, \
+            Items.seasons AS ItemSeasons, \
+            Items.description AS ItemDescription \
+            FROM Items \
+            ORDER BY ID ASC;"
 
             cur = mysql.connection.cursor()
             cur.execute(query1)
@@ -466,11 +490,10 @@ def update_items(id):
     if request.method == "GET":
         query3 = f"SELECT * FROM Items \
         WHERE Items.item_id = {id};"
-        
+
         cur = mysql.connection.cursor()
         cur.execute(query3)
         itemSet = cur.fetchall()
-        #display the form
         return render_template("updateitems.html", itemSet=itemSet)
 
 @app.route('/items/delete/<int:id>', methods=["POST"])

@@ -10,10 +10,11 @@
         <tbody>
             {% for entry in charSet %}
             <tr>
-                {% for key in entry.keys() %} 
+                {% for key in entry.keys() %}
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -35,7 +36,10 @@
             {% endfor %}
         </select>
         Romanceable?
-        <input type="radio" id="romanceable" name="romanceable" value="romanceable">
+        <select id="romanceable" name="romanceable">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
         <input type="submit" value="Submit">
     </form>
 {% endblock %}

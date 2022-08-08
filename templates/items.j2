@@ -2,7 +2,12 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<p> Search Functionality Implemented Here </p>
+<p> Search By Name:
+    <form action="/searchitems" method="POST">
+        <input type="text" id="searchterm" name="searchterm">
+        <input type="submit" value="Submit">
+    </form>
+</p>
     <table>
         <tr>
             <th></th>
@@ -20,6 +25,7 @@
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 

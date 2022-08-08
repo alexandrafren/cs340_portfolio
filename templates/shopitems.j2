@@ -14,6 +14,7 @@
                 <td>{{ entry[key] }}</td>
                 {% endfor %}
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -24,6 +25,7 @@
         <select id="shop" name="shop">
             {% for shop in shopSet %}
             <option value="{{shop.shop_id}}">{{shop.name}}</option>
+            {% endfor %}
         </select>
         <label for="item">Item: </label>
         <select id="item" name="item">
