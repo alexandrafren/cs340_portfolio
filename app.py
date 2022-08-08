@@ -375,9 +375,8 @@ def get_shopitems():
         cur.execute(query3)
         shopSet = cur.fetchall()
         cur.execute(query4)
-        itemSet = cur.fetchall()
-
-    return render_template("shopitems.j2", shopItems=shopitem_data, shopSet=shopSet, itemSet=itemSet)
+        itemSet = cur.fetchall()    
+        return render_template("shopitems.j2", shopItems=shopitem_data, shopSet=shopSet, itemSet=itemSet)
 
 @app.route('/regions', methods=["POST", "GET"])
 def get_regions():
@@ -439,7 +438,7 @@ def get_items():
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-    return render_template("items.j2", itemSet=itemSet)
+        return render_template("items.j2", itemSet=itemSet)
 
 @app.route('/items/update/<int:id>', methods=["POST", "GET"])
 def update_items(id):
