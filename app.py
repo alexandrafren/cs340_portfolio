@@ -135,7 +135,7 @@ def get_characters():
         cur.execute(query3)
         regionSet = cur.fetchall()
 
-        return render_template("characters.html", charSet=char_data, regionSet=regionSet)
+        return render_template("characters.j2", charSet=char_data, regionSet=regionSet)
 
 
 # Character Item CRUD Functions

@@ -1,0 +1,41 @@
+<h3>Non Playable Characters</h3>
+{% extends "navbar.html" %}
+{% block content %}
+    <table>
+        <tr>
+            {% for key in charSet[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+            {% for entry in charSet %}
+            <tr>
+                {% for key in entry.keys() %} 
+                <td>{{ entry[key] }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <form action="/characters" method="POST">
+        Add a Character:
+        <label for="name" name="name">Character Name: </label>
+        <input type="text" id="name" name="name">
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description">
+        <label for="occupation">Occupation: </label>
+        <input type="text" id="occupation" name="occupation">
+        <label for="birthday">Birthday (Format Winter 23, Fall 16, etc.): </label>
+        <input type="text" id="birthday" name="birthday">
+        <label for="region">Region: </label>
+        <select id="region" name="region">
+            {% for item in regionSet %}
+            <option value="{{item.item_id}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        Romanceable?
+        <input type="radio" id="romanceable" name="romanceable" value="romanceable">
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
