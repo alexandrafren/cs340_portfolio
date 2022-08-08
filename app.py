@@ -120,7 +120,7 @@ def get_characters():
         NonPlayableCharacters.occupation AS CharacterOccupation, \
         NonPlayableCharacters.birthday AS CharacterBirthday, \
         Regions.name AS CharacterRegion, \
-        NonPlayableCharacters.is_romanceable AS CharacterIsRomanceable, \
+        NonPlayableCharacters.is_romanceable AS CharacterIsRomanceable\
         FROM NonPlayableCharacters\
         INNER JOIN Regions ON NonPlayableCharacters.region_id = Regions.region_id \
         ORDER BY CharacterName ASC;"
