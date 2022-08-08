@@ -430,13 +430,18 @@ def get_items():
         return redirect(request.url)
     """
     if request.method == "GET":
-        query2 = "SELECT item_id, name, seasons, description \
-                 FROM Items ORDER BY name ASC;"
+        query2 = "SELECT Items.item_id AS ID, \
+            Items.name AS ItemName, \
+            Items.seasons AS ItemSeasons, \
+            Items.description AS ItemDescription \
+            FROM Items \
+            ORDER BY ID ASC;"
 
         cur = mysql.connection.cursor()
         cur.execute(query2)
         itemSet = cur.fetchall()
-        return render_template("items.j2", itemSet=itemSet)
+        return itemSet
+        #return render_template("items.j2", itemSet=itemSet)
 
 @app.route('/items/update/<int:id>', methods=["POST", "GET"])
 def update_items(id):
