@@ -105,7 +105,7 @@ def get_characters():
             region_id = request.form["region"]
             romanceable = request.form["romanceable"]
             
-            query1 = f"INSERT INTO Characters (name, description, occupation, birthday, region, is_romanceable) \
+            query1 = f"INSERT INTO NonPlayableCharacters (name, description, occupation, birthday, region, is_romanceable) \
             VALUES ({name}, {desc}, {occ}, {bday}, {region_id}, {romanceable});"
 
             cur = mysql.connection.cursor()
@@ -114,7 +114,7 @@ def get_characters():
 
         return redirect(request.url)
     if request.method == "GET":
-        query2 = f"SELECT NonPlayableCharacters.character_id AS ID, \
+        query2 = "SELECT NonPlayableCharacters.character_id AS ID, \
         NonPlayableCharacters.name AS CharacterName, \
         NonPlayableCharacters.description AS CharacterDescription, \
         NonPlayableCharacters.occupation AS CharacterOccupation, \
