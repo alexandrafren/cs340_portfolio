@@ -413,6 +413,7 @@ def get_regions():
 @app.route('/items', methods=["POST", "GET"])
 def get_items():
     # ADD SEARCH HANDLING
+    """
     if request.method == "POST":
         if request.form.get("name"):
             name = request.form["name"]
@@ -427,6 +428,7 @@ def get_items():
             mysql.connection.commit()
 
         return redirect(request.url)
+    """
     if request.method == "GET":
         query2 = "SELECT Items.item_id AS ID, \
             Items.name AS ItemName, \
